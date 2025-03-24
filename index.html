@@ -25,6 +25,10 @@
             border: none;
             color: white;
         }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
         .btn-custom {
             background: #ff4b2b;
             color: white;
@@ -53,14 +57,17 @@
     <script>
         function fetchScore() {
             let cnic = document.getElementById("cnic").value.trim();
-            if (!/^\d{13}$/.test(cnic)) {
+            if (!/^[0-9]{13}$/.test(cnic)) {
                 document.getElementById("result").innerHTML = `<div class="alert alert-danger">Invalid CNIC Format!</div>`;
                 return;
             }
             
-            fetch(`http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
+            let apiUrl = `http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`;
+            fetch(apiUrl, { cache: "no-cache" })
                 .then(response => response.json())
                 .then(data => {
+                    console.log("API Response:", data); // Debugging Purpose
+                    
                     if (data.status === true && data.data && data.data.found === true) {
                         document.getElementById("result").innerHTML = `
                             <div class="alert alert-success">
@@ -68,10 +75,11 @@
                                 <strong>Score:</strong> ${data.data.score}
                             </div>`;
                     } else {
-                        document.getElementById("result").innerHTML = `<div class="alert alert-warning">No record found!</div>`;
+                        document.getElementById("result").innerHTML = `<div class="alert alert-warning">No record found or API Error!</div>`;
                     }
                 })
                 .catch(error => {
+                    console.error("Error fetching data:", error);
                     document.getElementById("result").innerHTML = `<div class="alert alert-danger">Error fetching data!</div>`;
                 });
         }
