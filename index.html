@@ -62,7 +62,9 @@
                 return;
             }
 
-            fetch(`http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
+            let apiUrl = 'http://pmtscore.rf.gd/fetch_score.php'; // Force HTTP since HTTPS is causing issues
+            
+            fetch(`${apiUrl}?cnic=${cnic}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data); // Debugging Purpose
