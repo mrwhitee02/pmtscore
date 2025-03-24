@@ -62,7 +62,7 @@
                 return;
             }
 
-            fetch(`http://localhost/score/fetch_score.php?cnic=${cnic}`)
+            fetch(`https://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data); // Debugging Purpose
