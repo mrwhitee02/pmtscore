@@ -57,17 +57,16 @@
     <script>
         function fetchScore() {
             let cnic = document.getElementById("cnic").value.trim();
-            if (!/^[0-9]{13}$/.test(cnic)) {
+            if (!/^\d{13}$/.test(cnic)) {
                 document.getElementById("result").innerHTML = `<div class="alert alert-danger">Invalid CNIC Format!</div>`;
                 return;
             }
-            
-            let apiUrl = `http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`;
-            fetch(apiUrl, { cache: "no-cache" })
+
+            fetch(`http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("API Response:", data); // Debugging Purpose
-                    
+                    console.log(data); // Debugging Purpose
+
                     if (data.status === true && data.data && data.data.found === true) {
                         document.getElementById("result").innerHTML = `
                             <div class="alert alert-success">
@@ -75,7 +74,7 @@
                                 <strong>Score:</strong> ${data.data.score}
                             </div>`;
                     } else {
-                        document.getElementById("result").innerHTML = `<div class="alert alert-warning">No record found or API Error!</div>`;
+                        document.getElementById("result").innerHTML = `<div class="alert alert-warning">No record found!</div>`;
                     }
                 })
                 .catch(error => {
