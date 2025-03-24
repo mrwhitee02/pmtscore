@@ -25,10 +25,6 @@
             border: none;
             color: white;
         }
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
         .btn-custom {
             background: #ff4b2b;
             color: white;
@@ -61,12 +57,10 @@
                 document.getElementById("result").innerHTML = `<div class="alert alert-danger">Invalid CNIC Format!</div>`;
                 return;
             }
-
-            fetch(`https://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
+            
+            fetch(`http://pmtscore.rf.gd/fetch_score.php?cnic=${cnic}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Debugging Purpose
-
                     if (data.status === true && data.data && data.data.found === true) {
                         document.getElementById("result").innerHTML = `
                             <div class="alert alert-success">
@@ -78,7 +72,6 @@
                     }
                 })
                 .catch(error => {
-                    console.error("Error fetching data:", error);
                     document.getElementById("result").innerHTML = `<div class="alert alert-danger">Error fetching data!</div>`;
                 });
         }
